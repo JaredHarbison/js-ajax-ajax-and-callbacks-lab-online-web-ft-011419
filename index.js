@@ -27,3 +27,31 @@ function displayRepositories(response) {
         
         return repoList;
 }
+
+function searchRepositories() {
+    const searchTerm = $("#searchTerms").val();
+    $.get(`https://api.github.com/search/repositories? q=${searchTerm}`, reponse => {
+        $("#results").html(displayRepositories(response));
+    }).fail(displayError());
+};
+
+function displayCommits(response) {
+    return response.map(commit => {
+        return `
+            <div>
+                <h3>${commit.sha}</h3>
+                <img src="${commit.author.avatar_url}" alt="avatar">
+                <p>${commit.author.login}</p>
+                <p>${commit.commit.message}</p>
+            </div>
+            `
+    }).join('');
+}
+
+function showCommits(repo) {
+  const repository = repo.dataset.repository 
+  const owner = repo.dataset.owner 
+  $.get(`https://api.github.com/repos/${owner}/${repository}/commits`, response => {
+      $("#details").html(displayCommits(response);
+  }).fail(displayError());
+};
