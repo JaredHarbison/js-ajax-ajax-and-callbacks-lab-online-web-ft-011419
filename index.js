@@ -55,3 +55,5 @@ function showCommits(repo) {
       $("#details").html(displayCommits(response));
   }).fail(displayError());
 };
+
+$("#search").on('click', searchRepositories).fail(displayError());
